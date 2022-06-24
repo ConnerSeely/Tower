@@ -1,15 +1,14 @@
 <template>
-  <header>
-    <Navbar />
-  </header>
-  <main>
-    <router-view />
-  </main>
-  <footer>
-    <div class="bg-dark text-light text-center p-4">
-      Made with 💖 by CodeWorks
+  <main class="container-fluid">
+    <div class="row">
+      <div class="col-10 p-0">
+        <router-view />
+      </div>
+      <div class="col-2 p-0">
+        <Sidebar />
+      </div>
     </div>
-  </footer>
+  </main>
 </template>
 
 <script>
@@ -26,5 +25,4 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
-
 </style>
