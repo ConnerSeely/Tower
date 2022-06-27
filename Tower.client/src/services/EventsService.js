@@ -8,6 +8,7 @@ class EventsService {
         logger.log('created event', res.data)
         AppState.accountEvents.push(res.data)
         AppState.events.push(res.data)
+        return res.data
     }
 
     async getEvents(query = '') {
@@ -27,6 +28,13 @@ class EventsService {
         logger.log('editing event', res.data)
         AppState.activeEvent = res.data
     }
+
+    async cancelEvent(eventId) {
+        const res = await api.delete('api/events/' + eventId)
+        logger.log('canceling event', res.data)
+        AppState.activeEvent = res.data
+    }
+
 }
 
 export const eventsService = new EventsService()

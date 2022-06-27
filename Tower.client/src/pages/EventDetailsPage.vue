@@ -52,7 +52,23 @@
         <h6>
           <b>{{ event.capacity }} spots left</b>
         </h6>
-        <button @click="attendEvent">Attend</button>
+        <button
+          type="button"
+          v-if="event.creatorId == account.id && event.isCanceled == false"
+          @click="cancelEvent"
+          class="btn btn-outline-danger bg-light"
+        >
+          Cancel Event
+        </button>
+        <div v-if="event.isCanceled == true">
+          <p>Event Canceled</p>
+        </div>
+        <div v-else>
+          <button v-if="event.capacity >= 1" @click="attendEvent">
+            Attend
+          </button>
+          <p v-else-if="event.capacity == 0"><s>SOLD OUT</s></p>
+        </div>
       </div>
     </div>
     <div class="row ticketHolder mt-2 text-light">
@@ -139,6 +155,16 @@ export default {
         let month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(time)
         let year = time.getUTCFullYear()
         return `${month} ${year}`
+      },
+      async cancelEvent() {
+        try {
+          if (await Pop.confirm()) {
+            await eventsService.cancelEvent(AppState.activeEvent.id)
+            Pop.toast('Event canceled', 'success')
+          }
+        } catch (error) {
+          Pop.error(error)
+        }
       }
     }
   }
